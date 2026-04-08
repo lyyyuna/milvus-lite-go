@@ -7,7 +7,7 @@ The milvus-lite binary is embedded in platform-specific Go sub-modules via `go:e
 ## Install
 
 ```bash
-go get github.com/lyyyuna/milvus-lite-go@v2.5.100
+go get github.com/lyyyuna/milvus-lite-go/v2@latest
 ```
 
 ## Usage
