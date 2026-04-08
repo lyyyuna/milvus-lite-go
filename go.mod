@@ -34,3 +34,11 @@ require (
 	google.golang.org/genproto v0.0.0-20220503193339-ba3ae3f07e29 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 )
+
+replace github.com/lyyyuna/milvus-lite-go/platform/darwin-arm64 => ./platform/darwin-arm64
+
+replace github.com/lyyyuna/milvus-lite-go/platform/darwin-amd64 => ./platform/darwin-amd64
+
+replace github.com/lyyyuna/milvus-lite-go/platform/linux-amd64 => ./platform/linux-amd64
+
+replace github.com/lyyyuna/milvus-lite-go/platform/linux-arm64 => ./platform/linux-arm64
