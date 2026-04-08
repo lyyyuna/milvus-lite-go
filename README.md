@@ -2,12 +2,12 @@
 
 Go wrapper for [milvus-lite](https://github.com/milvus-io/milvus-lite) — an embedded vector database.
 
-Start a milvus-lite server from Go with zero external dependencies. The pre-built binary is automatically downloaded from PyPI on first use and cached locally.
+The milvus-lite binary is embedded in platform-specific Go sub-modules via `go:embed`. `go get` only downloads the binary for your platform — no runtime downloads needed.
 
 ## Install
 
 ```bash
-go get github.com/lyyyuna/milvus-lite-go
+go get github.com/lyyyuna/milvus-lite-go@v2.5.100
 ```
 
 ## Usage
@@ -25,19 +25,16 @@ import (
 )
 
 func main() {
-	// Start milvus-lite (downloads binary on first run)
 	server, err := milvuslite.Start("./milvus.db")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer server.Stop()
 
-	// Connect with the official Go SDK
 	ctx := context.Background()
 	c, _ := client.NewClient(ctx, client.Config{Address: server.Addr()})
 	defer c.Close()
 
-	// Use as normal Milvus
 	schema := entity.NewSchema().WithName("demo").
 		WithField(entity.NewField().WithName("id").WithDataType(entity.FieldTypeInt64).WithIsPrimaryKey(true).WithIsAutoID(true)).
 		WithField(entity.NewField().WithName("vector").WithDataType(entity.FieldTypeFloatVector).WithDim(128))
@@ -48,23 +45,35 @@ func main() {
 
 ## How it works
 
-1. On first `Start()`, downloads the milvus-lite wheel from PyPI (respects `pip.conf` mirror settings for users in China)
-2. Extracts the `milvus` binary + shared libraries to `~/.cache/milvus-lite/{version}/{os}-{arch}/`
-3. Starts the binary as a subprocess listening on a random localhost port
-4. Returns the gRPC address for use with [milvus-sdk-go](https://github.com/milvus-io/milvus-sdk-go)
+```
+github.com/lyyyuna/milvus-lite-go/
+├── go.mod                          ← main module (pure Go logic)
+├── server.go                       ← Start/Stop/Addr
+├── embed.go                        ← extract embedded binary to temp dir
+├── platform_darwin_arm64.go        ← //go:build darwin && arm64
+├── platform/
+│   ├── darwin-arm64/go.mod         ← sub-module with embedded binary
+│   ├── darwin-amd64/go.mod
+│   ├── linux-amd64/go.mod
+│   └── linux-arm64/go.mod
+```
+
+Build tags select the right sub-module at compile time. `go get` only downloads the matching platform's binary (~24-55MB), not all platforms.
+
+At runtime, the embedded binary is extracted to a temp directory and started as a subprocess.
 
 ## Supported platforms
 
-| OS | Arch | Status |
-|----|------|--------|
-| macOS | arm64 (Apple Silicon) | ✅ |
-| macOS | amd64 (Intel) | ✅ |
-| Linux | amd64 | ✅ |
-| Linux | arm64 | ✅ |
+| OS | Arch | Sub-module |
+|----|------|------------|
+| macOS | arm64 (Apple Silicon) | `platform/darwin-arm64` |
+| macOS | amd64 (Intel) | `platform/darwin-amd64` |
+| Linux | amd64 | `platform/linux-amd64` |
+| Linux | arm64 | `platform/linux-arm64` |
 
 ## API compatibility
 
-This wrapper uses the same gRPC protocol as Milvus, so the official [milvus-sdk-go](https://github.com/milvus-io/milvus-sdk-go) works out of the box. All milvus-lite supported APIs work:
+All milvus-lite supported APIs work with the official [milvus-sdk-go](https://github.com/milvus-io/milvus-sdk-go):
 
 - **Collection**: Create, Drop, Has, Describe, GetCollectionStatistics
 - **Index**: Create (FLAT, IVF_FLAT), Describe, Drop
@@ -74,11 +83,9 @@ This wrapper uses the same gRPC protocol as Milvus, so the official [milvus-sdk-
 
 ### Known issues
 
-**`client.ListCollections()` returns empty** — This is a [milvus-lite bug](https://github.com/milvus-io/milvus-lite): `ShowCollections` doesn't return `collection_ids`, which the Go SDK relies on. Use the provided workaround:
+**`client.ListCollections()` returns empty** — milvus-lite bug: `ShowCollections` doesn't return `collection_ids`. Use the provided workaround:
 
 ```go
-// Instead of: colls, _ := client.ListCollections(ctx)
-// Use:
 names, _ := milvuslite.ListCollections(ctx, server.Addr())
 ```
 

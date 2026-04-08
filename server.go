@@ -18,7 +18,7 @@ type Server struct {
 	dbFile  string
 }
 
-// Start downloads the milvus-lite binary (if needed) and starts a server.
+// Start starts a milvus-lite server using the embedded binary.
 // dbFile is the path to the local database file (e.g., "./milvus.db").
 // The server listens on a random available port on localhost.
 func Start(dbFile string) (*Server, error) {
@@ -28,9 +28,9 @@ func Start(dbFile string) (*Server, error) {
 // StartWithAddress starts a milvus-lite server on the specified address.
 // If addr is empty, a random available port on localhost is used.
 func StartWithAddress(dbFile, addr string) (*Server, error) {
-	lib, err := ensureBinary(Version)
+	lib, err := libDir()
 	if err != nil {
-		return nil, fmt.Errorf("ensure binary: %w", err)
+		return nil, fmt.Errorf("extract embedded binary: %w", err)
 	}
 
 	if addr == "" {
