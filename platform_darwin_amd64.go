@@ -2,7 +2,7 @@
 
 package milvuslite
 
-import darwinamd64 "github.com/lyyyuna/milvus-lite-go/platform/darwin-amd64"
+import darwinamd64 "github.com/lyyyuna/milvus-lite-go/v2/platform/darwin-amd64"
 
 func init() {
 	platformLib = darwinamd64.Lib

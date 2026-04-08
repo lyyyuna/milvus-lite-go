@@ -6,7 +6,7 @@ import (
 	"log"
 	"math/rand"
 
-	milvuslite "github.com/lyyyuna/milvus-lite-go"
+	milvuslite "github.com/lyyyuna/milvus-lite-go/v2"
 	"github.com/milvus-io/milvus-sdk-go/v2/client"
 	"github.com/milvus-io/milvus-sdk-go/v2/entity"
 )

@@ -1,4 +1,4 @@
-module github.com/lyyyuna/milvus-lite-go
+module github.com/lyyyuna/milvus-lite-go/v2
 
 go 1.25.0
 
@@ -18,10 +18,10 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/lyyyuna/milvus-lite-go/platform/darwin-amd64 v0.0.0
-	github.com/lyyyuna/milvus-lite-go/platform/darwin-arm64 v0.0.0
-	github.com/lyyyuna/milvus-lite-go/platform/linux-amd64 v0.0.0
-	github.com/lyyyuna/milvus-lite-go/platform/linux-arm64 v0.0.0
+	github.com/lyyyuna/milvus-lite-go/v2/platform/darwin-amd64 v0.0.0
+	github.com/lyyyuna/milvus-lite-go/v2/platform/darwin-arm64 v0.0.0
+	github.com/lyyyuna/milvus-lite-go/v2/platform/linux-amd64 v0.0.0
+	github.com/lyyyuna/milvus-lite-go/v2/platform/linux-arm64 v0.0.0
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rogpeppe/go-internal v1.8.1 // indirect
 	github.com/tidwall/gjson v1.14.4 // indirect
@@ -35,10 +35,10 @@ require (
 	google.golang.org/protobuf v1.33.0 // indirect
 )
 
-replace github.com/lyyyuna/milvus-lite-go/platform/darwin-arm64 => ./platform/darwin-arm64
+replace github.com/lyyyuna/milvus-lite-go/v2/platform/darwin-arm64 => ./platform/darwin-arm64
 
-replace github.com/lyyyuna/milvus-lite-go/platform/darwin-amd64 => ./platform/darwin-amd64
+replace github.com/lyyyuna/milvus-lite-go/v2/platform/darwin-amd64 => ./platform/darwin-amd64
 
-replace github.com/lyyyuna/milvus-lite-go/platform/linux-amd64 => ./platform/linux-amd64
+replace github.com/lyyyuna/milvus-lite-go/v2/platform/linux-amd64 => ./platform/linux-amd64
 
-replace github.com/lyyyuna/milvus-lite-go/platform/linux-arm64 => ./platform/linux-arm64
+replace github.com/lyyyuna/milvus-lite-go/v2/platform/linux-arm64 => ./platform/linux-arm64
