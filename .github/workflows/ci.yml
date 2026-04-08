@@ -14,7 +14,7 @@ jobs:
         include:
           - os: macos-14       # Apple Silicon (arm64)
             name: macOS arm64
-          - os: macos-13       # Intel (amd64)
+          - os: macos-15       # Intel (amd64)
             name: macOS amd64
           - os: ubuntu-latest  # Linux (amd64)
             name: Linux amd64
